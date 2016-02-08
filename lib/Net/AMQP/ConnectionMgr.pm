@@ -224,6 +224,8 @@ The init_code ref will be called again in case there is a re-connect.
 The arguments to the coderef will be the connection and the channel
 number.
 
+=back
+
 =head1 COPYRIGHT
 
 Copyright 2016 Bloomberg Finance L.P.
