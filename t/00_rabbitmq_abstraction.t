@@ -30,7 +30,7 @@ my $underlying_object = bless {}, 'TestRabbitMQConn_1';
   }
 }
 
-my $cmgr = Net::AMQP::ConnectionMgr->new(undef, undef, TestRabbitMQConn_1);
+my $cmgr = Net::AMQP::ConnectionMgr->new(undef, undef, 'TestRabbitMQConn_1');
 ok($cmgr, "Creates connectionmgr object");
 is($cmgr->declare_channel
    (sub { my ($rmq, $channel) = @_;

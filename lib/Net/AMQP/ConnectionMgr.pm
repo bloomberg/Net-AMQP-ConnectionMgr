@@ -2,26 +2,28 @@ package Net::AMQP::ConnectionMgr;
 use strict;
 use warnings;
 
-our $VERSION = '0.0.1'
+our $VERSION = '0.0.1';
 
 sub new {
     my $self = shift;
     my $class = ref($self) || $self;
     my $hostname = shift || 'localhost';
     my $options = shift || {};
-    my $class = shift || 'Net::AMQP::RabbitMQ';
+    my $conn_class = shift || 'Net::AMQP::RabbitMQ';
     return bless
       { hostname => $hostname,
         options => $options,
-        conn_class => $class,
+        conn_class => $conn_class,
       }, $class;
 }
 
 sub _rmq_connect {
     my $self = shift;
-    eval "require $self->{conn_class}";
-    if ($@) {
-        die "Failed to load $self->{conn_class}: $@"
+    if (!$self->{conn_class}->can('new')) {
+        eval "require $self->{conn_class}";
+        if ($@) {
+            die "Failed to load $self->{conn_class}: $@"
+        }
     }
     $self->{rmq} = $self->{conn_class}->new();
     $self->{rmq}->connect($self->{hostname}, $self->{options});
